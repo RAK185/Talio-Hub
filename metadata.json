@@ -1,0 +1,6 @@
+{
+  "name": "Talio Hub",
+  "description": "AI-Powered Job Portal connecting Job Seekers, Recruiters, and Admins with smart matching, resume tools, and analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
