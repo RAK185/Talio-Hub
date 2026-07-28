@@ -109,3 +109,26 @@ export interface DashboardStats {
   acceptedApplications: number;
   rejectedApplications: number;
 }
+
+export interface JobRecommendation {
+  job: Job;
+  matchScore: number;
+  matchTier: 'Top Match' | 'High Match' | 'Good Match';
+  reasons: string[];
+  recommendationSource: string;
+}
+
+export interface AppNotification {
+  id: string;
+  applicantId: string;
+  type: 'status_update' | 'recommendation' | 'general';
+  title: string;
+  message: string;
+  status?: ApplicationStatus;
+  jobTitle?: string;
+  companyName?: string;
+  applicationId?: string;
+  timestamp: string;
+  read: boolean;
+}
+

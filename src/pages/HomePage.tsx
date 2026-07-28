@@ -4,6 +4,7 @@ import { Job, Company } from '../types';
 import { JobCard } from '../components/JobCard';
 import { ApplyModal } from '../components/ApplyModal';
 import { AiMatchModal } from '../components/AiMatchModal';
+import { AIJobRecommendations } from '../components/AIJobRecommendations';
 import {
   Search,
   MapPin,
@@ -64,65 +65,71 @@ export const HomePage: React.FC = () => {
     <div className="space-y-24 pb-20">
       
       {/* HERO SECTION */}
-      <section className="relative pt-8 pb-16 overflow-hidden">
+      <section className="relative pt-12 pb-20 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <div className="max-w-4xl space-y-4">
-            <h1 className="text-4xl sm:text-6xl font-bold leading-[1.1] tracking-tight">
-              The Future of Hiring <br/>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">
-                Powered by Intelligence.
+          <div className="max-w-4xl space-y-6">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#1C1917] border border-white/10 text-xs font-mono text-[#D4F268]">
+              <span className="w-2 h-2 rounded-full bg-[#D4F268] animate-ping" />
+              <span>[SYSTEM_SPEC_2026] INTELLIGENCE MATCHING ENGINE</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-7xl font-serif font-light leading-[1.08] tracking-tight text-[#E7E5E4]">
+              High-fidelity talent matching, <br />
+              <span className="italic font-normal text-[#D4F268]">
+                engineered with natural precision.
               </span>
             </h1>
-            <p className="text-slate-400 text-lg max-w-2xl">
-              Connect with 500k+ top companies and find roles that match your skill set perfectly using our AI-driven matching engine.
+
+            <p className="text-stone-400 text-lg sm:text-xl font-sans max-w-2xl leading-relaxed">
+              Connect directly with high-growth teams and specialized technical environments. Built for professionals who value algorithmic matching without recruiter friction.
             </p>
           </div>
 
-          {/* Sleek Search Bar */}
+          {/* Brutalist Naturalist Search Form */}
           <form
             onSubmit={handleSearchSubmit}
-            className="mt-8 w-full p-2 bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl flex flex-col sm:flex-row items-center shadow-2xl"
+            className="mt-10 w-full p-3 bg-[#1C1917] border border-white/10 rounded-3xl flex flex-col md:flex-row items-center shadow-2xl gap-3"
           >
-            <div className="flex-1 flex items-center px-4 w-full border-b sm:border-b-0 sm:border-r border-white/10 py-1">
-              <Search className="w-5 h-5 text-blue-400 mr-3 shrink-0" />
+            <div className="flex-1 flex items-center px-4 w-full border-b md:border-b-0 md:border-r border-white/10 py-2">
+              <Search className="w-5 h-5 text-[#D4F268] mr-3 shrink-0" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
-                placeholder="Job title, keywords, or company"
-                className="bg-transparent w-full outline-none text-white placeholder-slate-500 py-3 text-sm"
+                placeholder="Role title, tech stack, or engineering team"
+                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-500 py-2 text-sm font-sans"
               />
             </div>
 
-            <div className="flex-1 flex items-center px-4 w-full py-1">
-              <MapPin className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
+            <div className="flex-1 flex items-center px-4 w-full py-2">
+              <MapPin className="w-5 h-5 text-stone-500 mr-3 shrink-0" />
               <input
                 type="text"
                 value={locationTerm}
                 onChange={e => setLocationTerm(e.target.value)}
-                placeholder="Location or Remote"
-                className="bg-transparent w-full outline-none text-white placeholder-slate-500 py-3 text-sm"
+                placeholder="Geographic location or [REMOTE]"
+                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-500 py-2 text-sm font-mono"
               />
             </div>
 
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3.5 rounded-xl font-semibold transition-all shadow-lg shadow-blue-600/20 w-full sm:w-auto shrink-0 text-sm flex items-center justify-center gap-2"
+              className="bg-[#D4F268] hover:bg-lime-300 text-[#0C0A09] px-8 py-4 rounded-full font-bold transition-all shadow-md shrink-0 text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer w-full md:w-auto"
             >
               <Search className="w-4 h-4" />
-              <span>Search Jobs</span>
+              <span>SEARCH POSITIONS</span>
             </button>
           </form>
 
           {/* Popular Tag Quick Links */}
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-400">
-            <span className="font-semibold text-slate-500">Popular:</span>
+          <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-mono text-stone-400">
+            <span className="text-stone-500 font-bold uppercase">[POPULAR_VECTORS]:</span>
             {['React Developer', 'Full Stack', 'Remote Jobs', 'AI Engineer', 'DevOps', 'UI/UX Designer'].map(tag => (
               <button
                 key={tag}
                 onClick={() => navigate(`/jobs?search=${encodeURIComponent(tag)}`)}
-                className="px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors"
+                className="px-3.5 py-1 rounded-full bg-[#1C1917] hover:border-[#D4F268]/50 border border-white/10 text-stone-300 hover:text-[#D4F268] transition-colors cursor-pointer"
               >
                 {tag}
               </button>
@@ -134,44 +141,44 @@ export const HomePage: React.FC = () => {
 
       {/* STATS SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 p-8 rounded-3xl bg-[#1C1917] border border-white/10 shadow-2xl">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
-              <Briefcase className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-[#D4F268] shrink-0 font-mono text-xs font-bold">
+              01
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white">42,109</h3>
-              <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Jobs Posted Today</p>
+              <h3 className="text-3xl font-mono font-bold text-white">42,109</h3>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-stone-400">Active Postings</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0">
-              <Building2 className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-[#D4F268] shrink-0 font-mono text-xs font-bold">
+              02
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white">12.5k</h3>
-              <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Companies Hiring</p>
+              <h3 className="text-3xl font-mono font-bold text-white">12.5k</h3>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-stone-400">Verified Teams</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
-              <Users className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-[#D4F268] shrink-0 font-mono text-xs font-bold">
+              03
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white">180,000+</h3>
-              <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Job Seekers</p>
+              <h3 className="text-3xl font-mono font-bold text-white">180k+</h3>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-stone-400">Active Candidates</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-full bg-stone-900 border border-white/10 flex items-center justify-center text-[#D4F268] shrink-0 font-mono text-xs font-bold">
+              04
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-white">89%</h3>
-              <p className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Match Accuracy</p>
+              <h3 className="text-3xl font-mono font-bold text-[#D4F268]">98.4%</h3>
+              <p className="text-[10px] font-mono uppercase tracking-widest text-stone-400">Match Precision</p>
             </div>
           </div>
         </div>
@@ -181,11 +188,13 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Browse Industry Sectors</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">Popular Job Categories</h2>
+            <span className="text-xs font-mono font-bold text-[#D4F268] uppercase tracking-widest">[DOMAINS]</span>
+            <h2 className="text-3xl sm:text-4xl font-serif italic font-light text-[#E7E5E4] mt-1">
+              Engineered <span className="not-italic font-sans font-semibold">Specializations</span>
+            </h2>
           </div>
-          <Link to="/jobs" className="flex items-center gap-1.5 text-xs font-bold text-blue-400 hover:text-blue-300">
-            <span>Explore All Roles</span>
+          <Link to="/jobs" className="flex items-center gap-2 text-xs font-mono font-bold text-[#D4F268] hover:underline">
+            <span>BROWSE ALL DOMAINS</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -197,34 +206,46 @@ export const HomePage: React.FC = () => {
               <div
                 key={idx}
                 onClick={() => navigate(`/jobs?category=${encodeURIComponent(cat.name)}`)}
-                className="group cursor-pointer p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 shadow-xl"
+                className="group cursor-pointer p-6 rounded-3xl bg-[#1C1917] border border-white/10 hover:border-[#D4F268]/50 transition-all duration-300 shadow-xl"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-xl border ${cat.color}`}>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="p-3.5 rounded-full bg-stone-900 border border-white/10 text-[#D4F268]">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <span className="text-xs font-mono text-slate-500">{cat.count}</span>
+                  <span className="text-xs font-mono text-stone-400">{cat.count}</span>
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">{cat.name}</h3>
-                <p className="text-xs text-slate-400 mt-1">Explore high-paying roles and remote opportunities.</p>
+                <h3 className="text-xl font-serif italic text-white group-hover:text-[#D4F268] transition-colors">{cat.name}</h3>
+                <p className="text-xs text-stone-400 mt-2 font-sans">High-impact engineering, research, and technical leadership roles.</p>
               </div>
             );
           })}
         </div>
       </section>
 
+      {/* AI RECOMMENDATIONS SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AIJobRecommendations
+          title="Personalized Vector Opportunities"
+          subtitle="Real-time candidate-to-position mapping derived from technical skill matrices"
+          limit={3}
+          showSkillsCustomizer={true}
+        />
+      </section>
+
       {/* FEATURED JOBS SECTION */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
           <div>
-            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Handpicked Opportunities</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">Featured Job Openings</h2>
+            <span className="text-xs font-mono font-bold text-[#D4F268] uppercase tracking-widest">[CURATED]</span>
+            <h2 className="text-3xl sm:text-4xl font-serif italic text-[#E7E5E4] mt-1">
+              Featured <span className="not-italic font-sans font-semibold">Technical Openings</span>
+            </h2>
           </div>
           <Link
             to="/jobs"
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-colors"
+            className="px-6 py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-xs font-mono font-bold text-[#E7E5E4] transition-colors border border-white/10"
           >
-            View All Openings
+            EXPLORE ALL POSITIONS
           </Link>
         </div>
 
@@ -241,27 +262,27 @@ export const HomePage: React.FC = () => {
 
       {/* TOP COMPANIES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-bold text-blue-400 uppercase tracking-widest">Industry Leaders</span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">Top Tech Companies Hiring Now</h2>
-          <p className="text-xs text-slate-400 mt-2">Connect with organizations building tomorrow's tech stack.</p>
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <span className="text-xs font-mono font-bold text-[#D4F268] uppercase tracking-widest">[ORGANIZATIONS]</span>
+          <h2 className="text-3xl sm:text-4xl font-serif italic text-white">Top Technical Ecosystems Hiring</h2>
+          <p className="text-xs font-mono text-stone-400">Direct integration with engineering teams building modern infrastructure.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {topCompanies.map(comp => (
             <div
               key={comp.id}
-              className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex flex-col items-center text-center group cursor-pointer"
+              className="p-6 rounded-3xl bg-[#1C1917] border border-white/10 hover:border-[#D4F268]/50 transition-all flex flex-col items-center text-center group cursor-pointer"
             >
               <img
                 src={comp.logo}
                 alt={comp.name}
-                className="w-14 h-14 rounded-2xl object-cover ring-1 ring-white/10 bg-white/10 p-1 mb-4 group-hover:scale-105 transition-transform"
+                className="w-14 h-14 rounded-2xl object-cover ring-1 ring-white/10 bg-stone-900 p-1 mb-4 group-hover:scale-105 transition-transform"
               />
-              <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors">{comp.name}</h3>
-              <p className="text-xs text-slate-400 mt-1">{comp.industry}</p>
-              <span className="mt-3 px-3 py-1 rounded-md text-[11px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                {comp.jobsCount} Open Roles
+              <h3 className="text-base font-serif italic text-white group-hover:text-[#D4F268] transition-colors">{comp.name}</h3>
+              <p className="text-xs font-mono text-stone-400 mt-1">{comp.industry}</p>
+              <span className="mt-4 px-3.5 py-1 rounded-full text-[10px] font-mono font-bold bg-stone-900 text-[#D4F268] border border-[#D4F268]/30">
+                {comp.jobsCount} OPEN ROLES
               </span>
             </div>
           ))}
@@ -270,27 +291,27 @@ export const HomePage: React.FC = () => {
 
       {/* TESTIMONIALS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-12 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xl relative overflow-hidden">
+        <div className="p-10 sm:p-14 rounded-3xl bg-[#1C1917] border border-white/10 relative overflow-hidden">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <div className="flex items-center justify-center gap-1 text-amber-400">
+            <div className="flex items-center justify-center gap-1.5 text-[#D4F268]">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400" />
+                <Star key={i} className="w-5 h-5 fill-[#D4F268]" />
               ))}
             </div>
 
-            <p className="text-lg sm:text-xl font-medium text-slate-200 italic leading-relaxed">
-              "Talio Hub's AI match tool completely transformed my job search. Within 48 hours of uploading my resume, I was connected with TechPulse AI for a Senior Full Stack role. The match score was spot on!"
+            <p className="text-xl sm:text-2xl font-serif italic text-[#E7E5E4] leading-relaxed">
+              "Talio Hub bypassed the noise of conventional job portals. The resume match signal connected me with TechPulse AI directly, matching my deep-learning skillset in under two days."
             </p>
 
-            <div className="flex items-center justify-center gap-3">
+            <div className="flex items-center justify-center gap-3 pt-2">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
                 alt="Alex Morgan"
-                className="w-12 h-12 rounded-full object-cover ring-2 ring-blue-500"
+                className="w-12 h-12 rounded-full object-cover ring-2 ring-[#D4F268]"
               />
               <div className="text-left">
                 <h4 className="text-sm font-bold text-white">Alex Morgan</h4>
-                <p className="text-xs text-slate-400">Senior Full Stack Engineer at TechPulse AI</p>
+                <p className="text-xs font-mono text-stone-400">Staff AI Engineer at TechPulse</p>
               </div>
             </div>
           </div>

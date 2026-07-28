@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useWebSocket } from '../context/WebSocketContext';
 import { Application, Job } from '../types';
 import { JobCard } from '../components/JobCard';
 import { ApplyModal } from '../components/ApplyModal';
+import { AIJobRecommendations } from '../components/AIJobRecommendations';
 import {
   User,
   FileText,
@@ -23,12 +25,14 @@ import {
   HelpCircle,
   RefreshCw,
   Award,
+  Radio,
 } from 'lucide-react';
 
 export const ApplicantDashboard: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { user, token, updateUser } = useAuth();
   const { showToast } = useTheme();
+  const { latestUpdatedApplication, isConnected } = useWebSocket();
 
   const [activeTab, setActiveTab] = useState<'profile' | 'applications' | 'saved' | 'aiCoach'>(
     (searchParams.get('tab') as 'profile' | 'applications' | 'saved' | 'aiCoach') || 'profile'
@@ -39,6 +43,19 @@ export const ApplicantDashboard: React.FC = () => {
   const [savedJobs, setSavedJobs] = useState<Job[]>([]);
   const [loadingApps, setLoadingApps] = useState(false);
   const [selectedJobForApply, setSelectedJobForApply] = useState<Job | null>(null);
+
+  // Real-time status update listener
+  useEffect(() => {
+    if (latestUpdatedApplication) {
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === latestUpdatedApplication.id
+            ? { ...app, status: latestUpdatedApplication.status, notes: latestUpdatedApplication.notes }
+            : app
+        )
+      );
+    }
+  }, [latestUpdatedApplication]);
 
   // Profile Form State
   const [name, setName] = useState(user?.name || '');
@@ -230,29 +247,29 @@ export const ApplicantDashboard: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
       {/* Header Profile Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="p-8 rounded-3xl bg-[#1C1917] border border-white/10 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <div className="relative group">
             <img
               src={user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250'}
               alt={user?.name}
-              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-blue-500/40"
+              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#D4F268]/50"
             />
-            <label className="absolute inset-0 bg-slate-950/60 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-              <Upload className="w-5 h-5 text-white" />
+            <label className="absolute inset-0 bg-[#0C0A09]/70 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+              <Upload className="w-5 h-5 text-[#D4F268]" />
               <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
             </label>
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-extrabold text-white">{user?.name}</h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                Applicant Portal
+              <h1 className="text-3xl font-serif italic text-white">{user?.name}</h1>
+              <span className="px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-stone-900 text-[#D4F268] border border-[#D4F268]/30">
+                [APPLICANT_PORTAL]
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-medium mt-0.5">{user?.title || 'Software Professional'}</p>
-            <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
+            <p className="text-xs font-mono text-stone-400 mt-1">{user?.title || 'Technical Specialist'}</p>
+            <p className="text-xs text-stone-500 flex items-center gap-1 mt-1 font-mono">
               <MapPin className="w-3.5 h-3.5" /> {user?.location || 'San Francisco, CA'}
             </p>
           </div>
@@ -260,71 +277,71 @@ export const ApplicantDashboard: React.FC = () => {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
-          <div className="p-3.5 rounded-2xl bg-slate-800/50 border border-slate-700/50 text-center">
-            <span className="text-xl font-black text-blue-400">{applications.length}</span>
-            <p className="text-[10px] text-slate-400 font-medium">Applied Jobs</p>
+          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-white">{applications.length}</span>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Applied</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-slate-800/50 border border-slate-700/50 text-center">
-            <span className="text-xl font-black text-amber-400">{user?.savedJobs?.length || 0}</span>
-            <p className="text-[10px] text-slate-400 font-medium">Saved Jobs</p>
+          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-[#D4F268]">{user?.savedJobs?.length || 0}</span>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Saved</p>
           </div>
-          <div className="p-3.5 rounded-2xl bg-slate-800/50 border border-slate-700/50 text-center">
-            <span className="text-xl font-black text-emerald-400">
+          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-emerald-400">
               {applications.filter(a => a.status === 'Accepted').length}
             </span>
-            <p className="text-[10px] text-slate-400 font-medium">Interview Calls</p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Offers</p>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800 gap-2 overflow-x-auto pb-1">
+      <div className="flex border-b border-white/10 gap-2 overflow-x-auto pb-2">
         <button
           onClick={() => setActiveTab('profile')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'profile'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              ? 'bg-[#D4F268] text-[#0C0A09]'
+              : 'text-stone-400 hover:text-white hover:bg-stone-900'
           }`}
         >
           <User className="w-4 h-4" />
-          Profile & Resume
+          PROFILE & RESUME
         </button>
 
         <button
           onClick={() => setActiveTab('applications')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'applications'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              ? 'bg-[#D4F268] text-[#0C0A09]'
+              : 'text-stone-400 hover:text-white hover:bg-stone-900'
           }`}
         >
           <Send className="w-4 h-4" />
-          My Applications ({applications.length})
+          APPLICATIONS ({applications.length})
         </button>
 
         <button
           onClick={() => setActiveTab('saved')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'saved'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              ? 'bg-[#D4F268] text-[#0C0A09]'
+              : 'text-stone-400 hover:text-white hover:bg-stone-900'
           }`}
         >
           <Bookmark className="w-4 h-4" />
-          Saved Bookmarks ({user?.savedJobs?.length || 0})
+          BOOKMARKS ({user?.savedJobs?.length || 0})
         </button>
 
         <button
           onClick={() => setActiveTab('aiCoach')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'aiCoach'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-              : 'text-blue-400 hover:text-white hover:bg-slate-800'
+              ? 'bg-[#D4F268] text-[#0C0A09]'
+              : 'text-stone-400 hover:text-white hover:bg-stone-900'
           }`}
         >
           <Sparkles className="w-4 h-4" />
-          AI Career Coach
+          AI ADVISOR
         </button>
       </div>
 
@@ -593,6 +610,16 @@ export const ApplicantDashboard: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* AI RECOMMENDATIONS ENGINE SECTION IN DASHBOARD */}
+      <div className="pt-8 border-t border-slate-800">
+        <AIJobRecommendations
+          title="Recommended Roles For You"
+          subtitle="AI analyzed your skills, bio, and past applications to find these matches"
+          limit={6}
+          showSkillsCustomizer={true}
+        />
+      </div>
 
       {/* Apply Modal */}
       {selectedJobForApply && (

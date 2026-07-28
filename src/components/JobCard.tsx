@@ -27,68 +27,68 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onApplyClick }) => {
   };
 
   return (
-    <div className="group relative rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 p-5 transition-all duration-300 shadow-xl flex flex-col justify-between">
+    <div className="group relative rounded-3xl bg-[#1C1917] border border-white/10 hover:border-[#D4F268]/40 p-6 transition-all duration-300 shadow-xl flex flex-col justify-between">
       
       {/* Top Row: Company Logo, Title, Bookmark */}
       <div>
         <div className="flex items-start justify-between gap-4 mb-4">
-          <div className="flex items-center gap-3.5">
+          <div className="flex items-center gap-4">
             <img
               src={job.companyLogo || 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=200'}
               alt={job.companyName}
-              className="w-12 h-12 rounded-xl object-cover ring-1 ring-white/10 bg-white/10 p-1 shrink-0"
+              className="w-12 h-12 rounded-2xl object-cover ring-1 ring-white/10 bg-stone-900 p-1 shrink-0"
             />
             <div>
-              <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors line-clamp-1">
+              <h3 className="font-serif italic font-normal text-xl text-[#E7E5E4] group-hover:text-[#D4F268] transition-colors line-clamp-1">
                 <Link to={`/jobs/${job.id}`}>{job.title}</Link>
               </h3>
-              <p className="text-sm text-slate-400 flex items-center gap-1 mt-0.5">
-                <Building className="w-3.5 h-3.5 text-slate-500" />
-                {job.companyName} • {job.location}
+              <p className="text-xs text-stone-400 flex items-center gap-1.5 mt-1 font-mono">
+                <Building className="w-3.5 h-3.5 text-stone-500" />
+                {job.companyName} <span className="text-stone-600">•</span> {job.location}
               </p>
             </div>
           </div>
 
           <button
             onClick={() => toggleBookmark(job.id)}
-            className={`p-2.5 rounded-xl border transition-all ${
+            className={`p-2.5 rounded-full border transition-all cursor-pointer ${
               saved
-                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-                : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:bg-white/10'
+                ? 'bg-[#D4F268]/20 border-[#D4F268] text-[#D4F268]'
+                : 'bg-stone-900/50 border-white/10 text-stone-400 hover:text-white hover:border-white/20'
             }`}
             title={saved ? 'Remove Bookmark' : 'Save Job'}
           >
-            <Bookmark className={`w-4 h-4 ${saved ? 'fill-amber-400' : ''}`} />
+            <Bookmark className={`w-4 h-4 ${saved ? 'fill-[#D4F268]' : ''}`} />
           </button>
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="text-xs font-semibold px-2.5 py-1 bg-green-500/10 text-green-400 rounded-md">
+        <div className="flex flex-wrap items-center gap-2 mb-5">
+          <span className="text-[11px] font-mono font-semibold px-3 py-1 bg-stone-900 border border-white/10 text-stone-300 rounded-full">
             {job.jobType}
           </span>
-          <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400 border border-white/10 bg-white/5 px-2.5 py-1 rounded">
+          <span className="text-[11px] font-mono uppercase tracking-wider text-stone-400 border border-white/10 bg-stone-900/60 px-3 py-1 rounded-full">
             {job.experienceLevel}
           </span>
-          <span className="text-[10px] uppercase tracking-wider font-bold text-blue-300 border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 rounded">
+          <span className="text-[11px] font-mono uppercase tracking-wider text-[#D4F268] border border-[#D4F268]/30 bg-[#D4F268]/10 px-3 py-1 rounded-full">
             {job.category}
           </span>
           {job.isFeatured && (
-            <span className="text-xs font-semibold px-2.5 py-1 bg-amber-500/10 text-amber-400 rounded-md flex items-center gap-1">
-              <Sparkles className="w-3 h-3 fill-amber-400" />
-              Featured
+            <span className="text-[11px] font-mono font-bold px-3 py-1 bg-[#D4F268] text-[#0C0A09] rounded-full flex items-center gap-1 shadow-sm">
+              <Sparkles className="w-3 h-3 fill-[#0C0A09]" />
+              FEATURED
             </span>
           )}
         </div>
       </div>
 
       {/* Footer / Action */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/5">
+      <div className="flex items-center justify-between pt-4 border-t border-white/10">
         <div>
-          <span className="font-bold text-white text-base block">
+          <span className="font-mono font-bold text-[#E7E5E4] text-sm block">
             {formatSalary(job.salaryMin, job.salaryMax, job.salaryPeriod)}
           </span>
-          <span className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+          <span className="text-[11px] font-mono text-stone-500 flex items-center gap-1 mt-0.5">
             <Clock className="w-3 h-3" />
             {getTimeAgo(job.createdAt)}
           </span>
@@ -97,13 +97,13 @@ export const JobCard: React.FC<JobCardProps> = ({ job, onApplyClick }) => {
         <div className="flex items-center gap-2">
           <Link
             to={`/jobs/${job.id}`}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10"
+            className="px-4 py-2 rounded-full text-xs font-semibold text-stone-300 hover:text-white bg-stone-900 hover:bg-stone-800 transition-colors border border-white/10"
           >
-            Details
+            Specs
           </Link>
           <button
             onClick={() => onApplyClick ? onApplyClick(job) : null}
-            className="flex items-center gap-1 px-4 py-1.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20"
+            className="flex items-center gap-1 px-5 py-2 rounded-full text-xs font-bold text-[#0C0A09] bg-[#D4F268] hover:bg-lime-300 transition-all cursor-pointer shadow-md shadow-[#D4F268]/10"
           >
             Apply <ArrowUpRight className="w-3.5 h-3.5" />
           </button>

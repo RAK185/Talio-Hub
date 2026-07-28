@@ -1,4 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
+import http from 'http';
+import { WebSocketServer, WebSocket } from 'ws';
 import path from 'path';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
@@ -7,13 +9,118 @@ import multer from 'multer';
 import { GoogleGenAI } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { store } from './src/backend/store.js';
-import { Role } from './src/types.js';
+import { Role, AppNotification } from './src/types.js';
+import { db } from './src/lib/firebase.js';
+import { collection, addDoc, doc, updateDoc, setDoc } from 'firebase/firestore';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'talio_hub_super_secret_jwt_key_2026';
 const PORT = 3000;
 
 // Initialize Express App
 const app = express();
+const server = http.createServer(app);
+
+// Initialize WebSocket Server
+const wss = new WebSocketServer({ noServer: true });
+
+// Store connected WebSocket clients mapped by userId
+const connectedClients = new Map<string, WebSocket[]>();
+
+// In-memory notifications store
+const userNotifications: AppNotification[] = [];
+
+// Handle WS Connection Upgrade safely
+server.on('upgrade', (request, socket, head) => {
+  const url = new URL(request.url || '', `http://${request.headers.host}`);
+  if (url.pathname === '/ws') {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+wss.on('connection', (ws: WebSocket, request: http.IncomingMessage) => {
+  const url = new URL(request.url || '', `http://${request.headers.host}`);
+  const userId = url.searchParams.get('userId');
+
+  if (userId) {
+    const existing = connectedClients.get(userId) || [];
+    connectedClients.set(userId, [...existing, ws]);
+  }
+
+  ws.on('close', () => {
+    if (userId) {
+      const existing = connectedClients.get(userId) || [];
+      connectedClients.set(
+        userId,
+        existing.filter((s) => s !== ws)
+      );
+    }
+  });
+
+  // Echo ping/pong for connection stability
+  ws.on('message', (message: string) => {
+    try {
+      const parsed = JSON.parse(message.toString());
+      if (parsed.type === 'PING') {
+        ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
+      }
+    } catch {
+      // Ignore non-json
+    }
+  });
+});
+
+// Helper function to send WS update and save notification
+async function notifyApplicantStatusUpdate(applicationId: string, status: 'Pending' | 'Reviewed' | 'Accepted' | 'Rejected', notes?: string) {
+  const appItem = store.applications.find((a) => a.id === applicationId);
+  if (!appItem) return;
+
+  const notification: AppNotification = {
+    id: `notif-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+    applicantId: appItem.applicantId,
+    type: 'status_update',
+    title: `Application ${status}!`,
+    message: `Your application for "${appItem.jobTitle}" at ${appItem.companyName} was updated to "${status}".${
+      notes ? ` Recruiter Note: ${notes}` : ''
+    }`,
+    status,
+    jobTitle: appItem.jobTitle,
+    companyName: appItem.companyName,
+    applicationId: appItem.id,
+    timestamp: new Date().toISOString(),
+    read: false,
+  };
+
+  userNotifications.unshift(notification);
+
+  // Sync to Firestore for durable persistence
+  try {
+    await addDoc(collection(db, 'notifications'), notification);
+    const appRef = doc(db, 'applications', appItem.id);
+    await setDoc(appRef, { ...appItem, status, notes, updatedAt: new Date().toISOString() }, { merge: true });
+  } catch (e) {
+    console.error('Firestore sync error:', e);
+  }
+
+  // Instant WebSocket push to candidate
+  const sockets = connectedClients.get(appItem.applicantId);
+  if (sockets && sockets.length > 0) {
+    const payload = JSON.stringify({
+      type: 'STATUS_UPDATE',
+      application: appItem,
+      notification,
+    });
+    sockets.forEach((s) => {
+      if (s.readyState === WebSocket.OPEN) {
+        s.send(payload);
+      }
+    });
+  }
+}
+
 
 // Middlewares
 app.use(cors());
@@ -567,7 +674,7 @@ app.get('/api/applications/recruiter', authenticateToken, requireRole(['recruite
 });
 
 // Update Application Status (Accept / Reject / Reviewed)
-app.put('/api/applications/:id/status', authenticateToken, requireRole(['recruiter', 'admin']), (req: AuthenticatedRequest, res: Response) => {
+app.put('/api/applications/:id/status', authenticateToken, requireRole(['recruiter', 'admin']), async (req: AuthenticatedRequest, res: Response) => {
   const { status, notes } = req.body;
   if (!['Pending', 'Reviewed', 'Accepted', 'Rejected'].includes(status)) {
     return res.status(400).json({ error: 'Invalid status' });
@@ -576,8 +683,134 @@ app.put('/api/applications/:id/status', authenticateToken, requireRole(['recruit
   const updated = store.updateApplicationStatus(req.params.id, status, notes);
   if (!updated) return res.status(404).json({ error: 'Application not found' });
 
+  // Trigger WebSocket instant push notification & Firestore sync
+  await notifyApplicantStatusUpdate(updated.id, status, notes);
+
   return res.json({ message: `Application ${status.toLowerCase()} successfully`, application: updated });
 });
+
+// Notifications API
+app.get('/api/notifications/my', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user) return res.status(401).json({ error: 'Not authenticated' });
+  const myNotifs = userNotifications.filter(n => n.applicantId === req.user?.id);
+  return res.json({ notifications: myNotifs, unreadCount: myNotifs.filter(n => !n.read).length });
+});
+
+app.put('/api/notifications/:id/read', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const notif = userNotifications.find(n => n.id === req.params.id);
+  if (notif) {
+    notif.read = true;
+  }
+  return res.json({ success: true });
+});
+
+app.put('/api/notifications/read-all', authenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  if (req.user) {
+    userNotifications.forEach(n => {
+      if (n.applicantId === req.user?.id) {
+        n.read = true;
+      }
+    });
+  }
+  return res.json({ success: true });
+});
+
+// ==========================================
+// AI JOB RECOMMENDATION ENGINE API
+// ==========================================
+
+app.post('/api/ai/recommendations', async (req: Request, res: Response) => {
+  try {
+    const { userId, skills = [], title = '', limit = 6 } = req.body;
+    let applicant = userId ? store.getUserById(userId) : null;
+
+    const candidateSkills: string[] = Array.isArray(skills) && skills.length > 0
+      ? skills
+      : (applicant?.skills || ['React', 'TypeScript', 'Node.js', 'Express', 'Tailwind CSS']);
+      
+    const candidateTitle: string = title || applicant?.title || 'Software Professional';
+
+    // Get applicant's past applications for collaborative filtering
+    const userApplications = applicant ? store.applications.filter(a => a.applicantId === applicant.id) : [];
+    const appliedJobIds = new Set(userApplications.map(a => a.jobId));
+    const appliedCategories = userApplications.map(a => a.jobTitle.toLowerCase());
+
+    const activeJobs = store.jobs.filter(j => j.status === 'Active');
+
+    // Perform Content-Based Filtering & Match Scoring
+    const scoredRecommendations = activeJobs.map(job => {
+      let score = 55; // base score
+      const reasons: string[] = [];
+
+      // 1. Content-based skill overlap
+      const jobReqs = job.requirements || [];
+      const matchedSkills = candidateSkills.filter(skill =>
+        jobReqs.some(req => req.toLowerCase().includes(skill.toLowerCase())) ||
+        job.description.toLowerCase().includes(skill.toLowerCase())
+      );
+
+      if (matchedSkills.length > 0) {
+        score += Math.min(30, matchedSkills.length * 8);
+        reasons.push(`Matches ${matchedSkills.length} key skills: ${matchedSkills.slice(0, 3).join(', ')}`);
+      }
+
+      // 2. Title & Role Keyword Alignment
+      const candidateTitleWord = candidateTitle.toLowerCase().split(' ')[0];
+      if (candidateTitleWord && job.title.toLowerCase().includes(candidateTitleWord)) {
+        score += 15;
+        reasons.push(`Direct alignment with your role: ${candidateTitle}`);
+      }
+
+      // 3. Collaborative / Past Application History Signal
+      if (appliedJobIds.has(job.id)) {
+        score -= 20; // Already applied
+        reasons.push('Position already applied for');
+      } else if (appliedCategories.some(cat => job.title.toLowerCase().includes(cat.split(' ')[0]))) {
+        score += 10;
+        reasons.push('Similar to roles you previously applied to');
+      }
+
+      // 4. Featured & Popularity Boost
+      if (job.isFeatured) {
+        score += 5;
+        reasons.push('Top featured hiring partner on Talio Hub');
+      }
+
+      const finalScore = Math.min(99, Math.max(62, score));
+      let matchTier: 'Top Match' | 'High Match' | 'Good Match' = 'Good Match';
+      if (finalScore >= 90) matchTier = 'Top Match';
+      else if (finalScore >= 80) matchTier = 'High Match';
+
+      if (reasons.length === 0) {
+        reasons.push('High market demand match for your tech background');
+      }
+
+      return {
+        job,
+        matchScore: finalScore,
+        matchTier,
+        reasons,
+        recommendationSource: matchedSkills.length > 0 ? 'Content-Based Skill Engine' : 'Collaborative Role Similarity',
+      };
+    });
+
+    // Sort descending by match score
+    scoredRecommendations.sort((a, b) => b.matchScore - a.matchScore);
+
+    const result = scoredRecommendations.slice(0, Number(limit) || 6);
+
+    return res.json({
+      recommendations: result,
+      totalAnalyzed: activeJobs.length,
+      candidateSkills,
+      candidateTitle,
+    });
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : 'Recommendation Engine error';
+    return res.status(500).json({ error: errorMsg });
+  }
+});
+
 
 // ==========================================
 // ADMIN API
@@ -784,8 +1017,8 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Talio Hub Server running on http://0.0.0.0:${PORT}`);
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Talio Hub Server & Real-time WebSockets running on http://0.0.0.0:${PORT}`);
   });
 }
 

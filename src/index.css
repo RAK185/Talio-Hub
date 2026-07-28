@@ -1,1 +1,65 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-stone: #0C0A09;
+    --accent-lime: #D4F268;
+    --surface-warm: #1C1917;
+    --foreground-stone: #E7E5E4;
+  }
+
+  body {
+    background-color: #0C0A09;
+    color: #E7E5E4;
+    font-family: 'Instrument Sans', sans-serif;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Newsreader', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* 4% Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Serrated Edge Mask */
+.serrated-bottom {
+  mask-image: radial-gradient(circle 10px at 10px 100%, transparent 10px, #000 10.5px);
+  mask-size: 20px 100%;
+}
+
+.serrated-top {
+  mask-image: radial-gradient(circle 10px at 10px 0%, transparent 10px, #000 10.5px);
+  mask-size: 20px 100%;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0C0A09;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4F268;
+}

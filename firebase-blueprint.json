@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User profile data",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "title": { "type": "string" },
+        "skills": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "jobs": {
+      "title": "Job",
+      "description": "Job listings",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "companyName": { "type": "string" },
+        "category": { "type": "string" },
+        "salaryMin": { "type": "number" },
+        "salaryMax": { "type": "number" }
+      }
+    },
+    "applications": {
+      "title": "Application",
+      "description": "Job application status",
+      "type": "object",
+      "properties": {
+        "jobId": { "type": "string" },
+        "applicantId": { "type": "string" },
+        "status": { "type": "string" },
+        "appliedAt": { "type": "string" }
+      }
+    },
+    "recommendations": {
+      "title": "Recommendation",
+      "description": "Personalized AI job recommendations for applicants",
+      "type": "object",
+      "properties": {
+        "applicantId": { "type": "string" },
+        "jobId": { "type": "string" },
+        "matchScore": { "type": "number" },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
