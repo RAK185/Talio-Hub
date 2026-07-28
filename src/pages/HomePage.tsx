@@ -5,6 +5,7 @@ import { JobCard } from '../components/JobCard';
 import { ApplyModal } from '../components/ApplyModal';
 import { AiMatchModal } from '../components/AiMatchModal';
 import { AIJobRecommendations } from '../components/AIJobRecommendations';
+import ShaderDemo from '../components/ui/hive';
 import {
   Search,
   MapPin,
@@ -64,14 +65,22 @@ export const HomePage: React.FC = () => {
   return (
     <div className="space-y-24 pb-20">
       
-      {/* HERO SECTION */}
-      <section className="relative pt-12 pb-20 overflow-hidden">
+      {/* HERO SECTION WITH WEBGL HIVE SHADER BACKDROP */}
+      <section className="relative pt-16 pb-24 overflow-hidden rounded-xl border border-white/10 bg-[#0C0A09]">
+        {/* Animated Hive Shader Background */}
+        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none mix-blend-screen overflow-hidden">
+          <ShaderDemo />
+        </div>
+        
+        {/* Dark Vignette Overlay for Readability */}
+        <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#0C0A09] via-[#0C0A09]/70 to-transparent pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <div className="max-w-4xl space-y-6">
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#1C1917] border border-white/10 text-xs font-mono text-[#D4F268]">
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#1C1917]/90 border border-[#D4F268]/30 backdrop-blur-md text-xs font-mono text-[#D4F268]">
               <span className="w-2 h-2 rounded-full bg-[#D4F268] animate-ping" />
-              <span>[SYSTEM_SPEC_2026] INTELLIGENCE MATCHING ENGINE</span>
+              <span>[SYSTEM_SPEC_2026] HIVE INTELLIGENCE MATCHING ENGINE</span>
             </div>
 
             <h1 className="text-4xl sm:text-7xl font-serif font-light leading-[1.08] tracking-tight text-[#E7E5E4]">
@@ -81,7 +90,7 @@ export const HomePage: React.FC = () => {
               </span>
             </h1>
 
-            <p className="text-stone-400 text-lg sm:text-xl font-sans max-w-2xl leading-relaxed">
+            <p className="text-stone-300 text-lg sm:text-xl font-sans max-w-2xl leading-relaxed">
               Connect directly with high-growth teams and specialized technical environments. Built for professionals who value algorithmic matching without recruiter friction.
             </p>
           </div>
@@ -89,7 +98,7 @@ export const HomePage: React.FC = () => {
           {/* Brutalist Naturalist Search Form */}
           <form
             onSubmit={handleSearchSubmit}
-            className="mt-10 w-full p-3 bg-[#1C1917] border border-white/10 rounded-3xl flex flex-col md:flex-row items-center shadow-2xl gap-3"
+            className="mt-10 w-full p-3 bg-[#1C1917]/90 border border-white/10 rounded-xl flex flex-col md:flex-row items-center shadow-2xl gap-3 backdrop-blur-md"
           >
             <div className="flex-1 flex items-center px-4 w-full border-b md:border-b-0 md:border-r border-white/10 py-2">
               <Search className="w-5 h-5 text-[#D4F268] mr-3 shrink-0" />
@@ -98,24 +107,24 @@ export const HomePage: React.FC = () => {
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
                 placeholder="Role title, tech stack, or engineering team"
-                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-500 py-2 text-sm font-sans"
+                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-400 py-2 text-sm font-sans"
               />
             </div>
 
             <div className="flex-1 flex items-center px-4 w-full py-2">
-              <MapPin className="w-5 h-5 text-stone-500 mr-3 shrink-0" />
+              <MapPin className="w-5 h-5 text-stone-400 mr-3 shrink-0" />
               <input
                 type="text"
                 value={locationTerm}
                 onChange={e => setLocationTerm(e.target.value)}
                 placeholder="Geographic location or [REMOTE]"
-                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-500 py-2 text-sm font-mono"
+                className="bg-transparent w-full outline-none text-[#E7E5E4] placeholder-stone-400 py-2 text-sm font-mono"
               />
             </div>
 
             <button
               type="submit"
-              className="bg-[#D4F268] hover:bg-lime-300 text-[#0C0A09] px-8 py-4 rounded-full font-bold transition-all shadow-md shrink-0 text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer w-full md:w-auto"
+              className="bg-[#D4F268] hover:bg-lime-300 text-[#0C0A09] px-8 py-4 rounded-lg font-bold transition-all shadow-lg hover:shadow-[#D4F268]/20 shrink-0 text-xs font-mono uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer w-full md:w-auto"
             >
               <Search className="w-4 h-4" />
               <span>SEARCH POSITIONS</span>
@@ -123,13 +132,13 @@ export const HomePage: React.FC = () => {
           </form>
 
           {/* Popular Tag Quick Links */}
-          <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-mono text-stone-400">
-            <span className="text-stone-500 font-bold uppercase">[POPULAR_VECTORS]:</span>
+          <div className="mt-5 flex flex-wrap items-center gap-2 text-xs font-mono text-stone-300">
+            <span className="text-stone-400 font-bold uppercase">[POPULAR_VECTORS]:</span>
             {['React Developer', 'Full Stack', 'Remote Jobs', 'AI Engineer', 'DevOps', 'UI/UX Designer'].map(tag => (
               <button
                 key={tag}
                 onClick={() => navigate(`/jobs?search=${encodeURIComponent(tag)}`)}
-                className="px-3.5 py-1 rounded-full bg-[#1C1917] hover:border-[#D4F268]/50 border border-white/10 text-stone-300 hover:text-[#D4F268] transition-colors cursor-pointer"
+                className="px-3.5 py-1 rounded-lg bg-[#1C1917]/80 hover:border-[#D4F268]/60 border border-white/10 text-stone-300 hover:text-[#D4F268] transition-colors cursor-pointer backdrop-blur-sm"
               >
                 {tag}
               </button>

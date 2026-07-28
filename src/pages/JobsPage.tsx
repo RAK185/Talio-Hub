@@ -4,6 +4,7 @@ import { Job } from '../types';
 import { JobCard } from '../components/JobCard';
 import { ApplyModal } from '../components/ApplyModal';
 import { AiMatchModal } from '../components/AiMatchModal';
+import { JobDensityMap } from '../components/JobDensityMap';
 import {
   Search,
   MapPin,
@@ -95,7 +96,7 @@ export const JobsPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
       {/* Search Header Banner */}
-      <div className="p-8 rounded-3xl bg-[#1C1917] border border-white/10 shadow-2xl relative overflow-hidden">
+      <div className="p-8 rounded-xl bg-[#1C1917] border border-white/10 shadow-2xl relative overflow-hidden">
         <div className="max-w-3xl space-y-3">
           <span className="text-xs font-mono font-bold text-[#D4F268] uppercase tracking-widest">[VECTOR_EXPLORER]</span>
           <h1 className="text-3xl sm:text-5xl font-serif italic text-white">Find Your Next Technical Vector</h1>
@@ -104,7 +105,7 @@ export const JobsPage: React.FC = () => {
 
         {/* Live Search Form */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-stone-900 border border-white/10">
+          <div className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-stone-900 border border-white/10">
             <Search className="w-4 h-4 text-[#D4F268] shrink-0" />
             <input
               type="text"
@@ -115,7 +116,7 @@ export const JobsPage: React.FC = () => {
             />
           </div>
 
-          <div className="flex items-center gap-2.5 px-4 py-3 rounded-full bg-stone-900 border border-white/10">
+          <div className="flex items-center gap-2.5 px-4 py-3 rounded-lg bg-stone-900 border border-white/10">
             <MapPin className="w-4 h-4 text-stone-500 shrink-0" />
             <input
               type="text"
@@ -130,7 +131,7 @@ export const JobsPage: React.FC = () => {
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value as 'recent' | 'salary' | 'popular')}
-              className="w-full px-4 py-3 rounded-full bg-stone-900 border border-white/10 text-xs font-mono text-white focus:outline-none cursor-pointer"
+              className="w-full px-4 py-3 rounded-lg bg-stone-900 border border-white/10 text-xs font-mono text-white focus:outline-none cursor-pointer"
             >
               <option value="recent" className="bg-[#1C1917] text-white">Sort: Most Recent</option>
               <option value="salary" className="bg-[#1C1917] text-white">Sort: Highest Compensation</option>
@@ -139,7 +140,7 @@ export const JobsPage: React.FC = () => {
 
             <button
               onClick={() => setShowMobileFilters(!showMobileFilters)}
-              className="lg:hidden p-3 rounded-full bg-[#D4F268] text-[#0C0A09] shrink-0 font-bold"
+              className="lg:hidden p-3 rounded-lg bg-[#D4F268] text-[#0C0A09] shrink-0 font-bold"
             >
               <SlidersHorizontal className="w-5 h-5" />
             </button>
@@ -147,11 +148,19 @@ export const JobsPage: React.FC = () => {
         </div>
       </div>
 
+      {/* D3-POWERED REGIONAL JOB DENSITY VISUALIZER */}
+      <JobDensityMap
+        onSelectRegion={(regionName) => {
+          setLocation(regionName);
+          setPage(1);
+        }}
+      />
+
       {/* Main Content Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         
         {/* Sidebar Filters (Desktop) */}
-        <aside className="hidden lg:block space-y-6 p-6 rounded-3xl bg-[#1C1917] border border-white/10 h-fit sticky top-24">
+        <aside className="hidden lg:block space-y-6 p-6 rounded-xl bg-[#1C1917] border border-white/10 h-fit sticky top-24">
           <div className="flex items-center justify-between pb-4 border-b border-white/10">
             <h2 className="text-xs font-mono font-bold text-stone-200 uppercase tracking-wider flex items-center gap-2">
               <SlidersHorizontal className="w-4 h-4 text-[#D4F268]" />
@@ -173,7 +182,7 @@ export const JobsPage: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => { setCategory(cat); setPage(1); }}
-                  className={`w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3.5 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     category === cat
                       ? 'bg-[#D4F268] text-[#0C0A09] font-bold'
                       : 'text-stone-400 hover:text-white hover:bg-stone-900'
@@ -193,7 +202,7 @@ export const JobsPage: React.FC = () => {
                 <button
                   key={jt}
                   onClick={() => { setJobType(jt); setPage(1); }}
-                  className={`w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3.5 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     jobType === jt
                       ? 'bg-[#D4F268] text-[#0C0A09] font-bold'
                       : 'text-stone-400 hover:text-white hover:bg-stone-900'
@@ -213,7 +222,7 @@ export const JobsPage: React.FC = () => {
                 <button
                   key={exp}
                   onClick={() => { setExperienceLevel(exp); setPage(1); }}
-                  className={`w-full text-left px-3.5 py-2 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3.5 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     experienceLevel === exp
                       ? 'bg-[#D4F268] text-[#0C0A09] font-bold'
                       : 'text-stone-400 hover:text-white hover:bg-stone-900'
