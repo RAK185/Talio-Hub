@@ -143,9 +143,8 @@ export const ApplicantDashboard: React.FC = () => {
       }
     } catch {
       showToast('Error saving profile', 'error');
-    } finally {
-      setIsUpdatingProfile(false);
-    }
+    } font: null;
+    setIsUpdatingProfile(false);
   };
 
   const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,42 +232,42 @@ export const ApplicantDashboard: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'Accepted':
-        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Accepted</span>;
+        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1"><CheckCircle2 className="w-3.5 h-3.5" /> Accepted</span>;
       case 'Rejected':
-        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30 flex items-center gap-1"><XCircle className="w-3.5 h-3.5" /> Rejected</span>;
+        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/30 flex items-center gap-1"><XCircle className="w-3.5 h-3.5" /> Rejected</span>;
       case 'Reviewed':
-        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" /> Under Review</span>;
+        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-[#D4F268] border border-stone-300 dark:border-white/10 flex items-center gap-1"><AlertCircle className="w-3.5 h-3.5" /> Under Review</span>;
       default:
-        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Pending</span>;
+        return <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> Pending</span>;
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans transition-colors">
       
       {/* Header Profile Banner */}
-      <div className="p-8 rounded-3xl bg-[#1C1917] border border-white/10 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <div className="relative group">
             <img
               src={user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250'}
               alt={user?.name}
-              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-[#D4F268]/50"
+              className="w-20 h-20 rounded-2xl object-cover ring-2 ring-stone-300 dark:ring-[#D4F268]/50"
             />
-            <label className="absolute inset-0 bg-[#0C0A09]/70 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
-              <Upload className="w-5 h-5 text-[#D4F268]" />
+            <label className="absolute inset-0 bg-stone-900/70 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+              <Upload className="w-5 h-5 text-white dark:text-[#D4F268]" />
               <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
             </label>
           </div>
 
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-serif italic text-white">{user?.name}</h1>
-              <span className="px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-stone-900 text-[#D4F268] border border-[#D4F268]/30">
+              <h1 className="text-3xl font-serif italic text-stone-900 dark:text-white">{user?.name}</h1>
+              <span className="px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-[#D4F268] border border-stone-200 dark:border-[#D4F268]/30">
                 [APPLICANT_PORTAL]
               </span>
             </div>
-            <p className="text-xs font-mono text-stone-400 mt-1">{user?.title || 'Technical Specialist'}</p>
+            <p className="text-xs font-mono text-stone-600 dark:text-stone-400 mt-1">{user?.title || 'Technical Specialist'}</p>
             <p className="text-xs text-stone-500 flex items-center gap-1 mt-1 font-mono">
               <MapPin className="w-3.5 h-3.5" /> {user?.location || 'San Francisco, CA'}
             </p>
@@ -277,31 +276,31 @@ export const ApplicantDashboard: React.FC = () => {
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3 w-full md:w-auto">
-          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
-            <span className="text-2xl font-mono font-bold text-white">{applications.length}</span>
-            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Applied</p>
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-stone-900 dark:text-white">{applications.length}</span>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-500 mt-1">Applied</p>
           </div>
-          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
-            <span className="text-2xl font-mono font-bold text-[#D4F268]">{user?.savedJobs?.length || 0}</span>
-            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Saved</p>
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-stone-900 dark:text-[#D4F268]">{user?.savedJobs?.length || 0}</span>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-500 mt-1">Saved</p>
           </div>
-          <div className="p-4 rounded-2xl bg-stone-900 border border-white/10 text-center">
-            <span className="text-2xl font-mono font-bold text-emerald-400">
+          <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-200 dark:border-white/10 text-center">
+            <span className="text-2xl font-mono font-bold text-emerald-600 dark:text-emerald-400">
               {applications.filter(a => a.status === 'Accepted').length}
             </span>
-            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-400 mt-1">Offers</p>
+            <p className="text-[10px] font-mono uppercase tracking-wider text-stone-500 mt-1">Offers</p>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-white/10 gap-2 overflow-x-auto pb-2">
+      <div className="flex border-b border-stone-200 dark:border-white/10 gap-2 overflow-x-auto pb-2">
         <button
           onClick={() => setActiveTab('profile')}
           className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'profile'
-              ? 'bg-[#D4F268] text-[#0C0A09]'
-              : 'text-stone-400 hover:text-white hover:bg-stone-900'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09]'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <User className="w-4 h-4" />
@@ -312,8 +311,8 @@ export const ApplicantDashboard: React.FC = () => {
           onClick={() => setActiveTab('applications')}
           className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'applications'
-              ? 'bg-[#D4F268] text-[#0C0A09]'
-              : 'text-stone-400 hover:text-white hover:bg-stone-900'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09]'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Send className="w-4 h-4" />
@@ -324,8 +323,8 @@ export const ApplicantDashboard: React.FC = () => {
           onClick={() => setActiveTab('saved')}
           className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'saved'
-              ? 'bg-[#D4F268] text-[#0C0A09]'
-              : 'text-stone-400 hover:text-white hover:bg-stone-900'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09]'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Bookmark className="w-4 h-4" />
@@ -336,8 +335,8 @@ export const ApplicantDashboard: React.FC = () => {
           onClick={() => setActiveTab('aiCoach')}
           className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-mono font-bold transition-all shrink-0 cursor-pointer ${
             activeTab === 'aiCoach'
-              ? 'bg-[#D4F268] text-[#0C0A09]'
-              : 'text-stone-400 hover:text-white hover:bg-stone-900'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09]'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Sparkles className="w-4 h-4" />
@@ -350,67 +349,67 @@ export const ApplicantDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Main Edit Form */}
-          <form onSubmit={handleProfileSave} className="lg:col-span-2 space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-            <h2 className="text-base font-bold text-white pb-3 border-b border-slate-800">Edit Profile Details</h2>
+          <form onSubmit={handleProfileSave} className="lg:col-span-2 space-y-6 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl">
+            <h2 className="text-base font-bold text-stone-900 dark:text-white pb-3 border-b border-stone-200 dark:border-white/10">Edit Profile Details</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Full Name</label>
+                <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Phone Number</label>
+                <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Phone Number</label>
                 <input
                   type="text"
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Professional Title</label>
+                <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Professional Title</label>
                 <input
                   type="text"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">Location</label>
+                <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Location</label>
                 <input
                   type="text"
                   value={location}
                   onChange={e => setLocation(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Professional Bio</label>
+              <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Professional Bio</label>
               <textarea
                 rows={4}
                 value={bio}
                 onChange={e => setBio(e.target.value)}
                 placeholder="Share a short overview of your software background and passion..."
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none resize-none"
               />
             </div>
 
             {/* Skills Tag Input */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Technical Skills & Tools</label>
+              <label className="block text-xs font-mono uppercase text-stone-700 dark:text-stone-300 mb-1.5">Technical Skills & Tools</label>
               <div className="flex gap-2 mb-3">
                 <input
                   type="text"
@@ -418,12 +417,12 @@ export const ApplicantDashboard: React.FC = () => {
                   onChange={e => setNewSkill(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addSkill(); } }}
                   placeholder="e.g. React, Docker, Python..."
-                  className="flex-1 px-4 py-2.5 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                  className="flex-1 px-4 py-2.5 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={addSkill}
-                  className="px-4 py-2.5 rounded-2xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-500"
+                  className="px-4 py-2.5 rounded-2xl bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold hover:bg-stone-800 dark:hover:bg-lime-300 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -433,10 +432,10 @@ export const ApplicantDashboard: React.FC = () => {
                 {skills.map((skill, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 text-blue-300 border border-blue-500/20 text-xs font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-white/10 text-xs font-mono font-medium"
                   >
                     {skill}
-                    <button type="button" onClick={() => removeSkill(skill)} className="hover:text-rose-400">
+                    <button type="button" onClick={() => removeSkill(skill)} className="hover:text-rose-500 cursor-pointer">
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </span>
@@ -448,7 +447,7 @@ export const ApplicantDashboard: React.FC = () => {
               <button
                 type="submit"
                 disabled={isUpdatingProfile}
-                className="px-6 py-3 rounded-2xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg transition-colors"
+                className="px-6 py-3 rounded-2xl bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold shadow-lg hover:bg-stone-800 dark:hover:bg-lime-300 transition-colors cursor-pointer"
               >
                 {isUpdatingProfile ? 'Saving Changes...' : 'Save Profile Changes'}
               </button>
@@ -457,19 +456,19 @@ export const ApplicantDashboard: React.FC = () => {
 
           {/* Resume Box */}
           <div className="space-y-6">
-            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <FileText className="w-4 h-4 text-blue-400" />
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-4">
+              <h2 className="text-xs font-mono font-bold text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                <FileText className="w-4 h-4 text-stone-800 dark:text-[#D4F268]" />
                 Resume Document
               </h2>
 
-              <div className="p-4 rounded-2xl bg-slate-800/50 border border-slate-700/60 space-y-2">
-                <p className="text-xs font-bold text-white truncate">{user?.resumeName || 'No resume uploaded'}</p>
-                <p className="text-[10px] text-slate-400">Uploaded resume used for one-click job applications and AI skill matching.</p>
+              <div className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 space-y-2">
+                <p className="text-xs font-bold text-stone-900 dark:text-white truncate">{user?.resumeName || 'No resume uploaded'}</p>
+                <p className="text-[10px] font-mono text-stone-500">Uploaded resume used for direct job applications and Gemini AI vector skill matching.</p>
               </div>
 
-              <label className="w-full py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-white flex items-center justify-center gap-2 cursor-pointer transition-colors">
-                <Upload className="w-4 h-4" />
+              <label className="w-full py-3 rounded-2xl bg-stone-100 dark:bg-stone-900 hover:bg-stone-200 dark:hover:bg-stone-800 border border-stone-300 dark:border-white/10 text-xs font-bold text-stone-900 dark:text-white flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-sm">
+                <Upload className="w-4 h-4 text-stone-800 dark:text-[#D4F268]" />
                 <span>Upload New Resume PDF</span>
                 <input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeUpload} className="hidden" />
               </label>
@@ -480,37 +479,37 @@ export const ApplicantDashboard: React.FC = () => {
 
       {/* TAB CONTENT: APPLICATIONS */}
       {activeTab === 'applications' && (
-        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <h2 className="text-base font-bold text-white pb-3 border-b border-slate-800">My Job Applications</h2>
+        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl">
+          <h2 className="text-base font-bold text-stone-900 dark:text-white pb-3 border-b border-stone-200 dark:border-white/10">My Job Applications</h2>
 
           {loadingApps ? (
-            <div className="py-12 text-center text-xs text-slate-400">Fetching applications...</div>
+            <div className="py-12 text-center text-xs text-stone-500 font-mono">Fetching applications...</div>
           ) : applications.length === 0 ? (
             <div className="py-12 text-center space-y-3">
-              <p className="text-sm text-slate-400">You haven't applied to any job roles yet.</p>
-              <Link to="/jobs" className="inline-block px-5 py-2.5 rounded-xl bg-blue-600 text-white text-xs font-bold">
+              <p className="text-sm text-stone-500 font-mono">You haven't applied to any job roles yet.</p>
+              <Link to="/jobs" className="inline-block px-5 py-2.5 rounded-full bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold">
                 Browse Open Jobs
               </Link>
             </div>
           ) : (
             <div className="space-y-4">
               {applications.map(app => (
-                <div key={app.id} className="p-5 rounded-2xl bg-slate-800/40 border border-slate-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div key={app.id} className="p-5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
                     <img
                       src={app.companyLogo || 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=200'}
                       alt={app.companyName}
-                      className="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-700 bg-slate-800 p-1"
+                      className="w-12 h-12 rounded-xl object-cover ring-1 ring-stone-300 dark:ring-white/10 bg-white p-1"
                     />
                     <div>
-                      <h3 className="text-base font-bold text-white">{app.jobTitle}</h3>
-                      <p className="text-xs text-slate-400">{app.companyName} • Applied on {new Date(app.appliedAt).toLocaleDateString()}</p>
+                      <h3 className="text-base font-bold text-stone-900 dark:text-white">{app.jobTitle}</h3>
+                      <p className="text-xs text-stone-600 dark:text-stone-400">{app.companyName} • Applied on {new Date(app.appliedAt).toLocaleDateString()}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-4">
                     {app.matchScore && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                      <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-[#D4F268]">
                         {app.matchScore}% Match
                       </span>
                     )}
@@ -526,9 +525,9 @@ export const ApplicantDashboard: React.FC = () => {
       {/* TAB CONTENT: SAVED JOBS */}
       {activeTab === 'saved' && (
         <div className="space-y-6">
-          <h2 className="text-base font-bold text-white">Bookmarked Positions</h2>
+          <h2 className="text-base font-bold text-stone-900 dark:text-white">Bookmarked Positions</h2>
           {savedJobs.length === 0 ? (
-            <div className="py-12 text-center p-8 rounded-3xl bg-slate-900 border border-slate-800 text-xs text-slate-400">
+            <div className="py-12 text-center p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 text-xs font-mono text-stone-500">
               No bookmarked jobs yet. Click the bookmark icon on any job card to save it here.
             </div>
           ) : (
@@ -543,13 +542,13 @@ export const ApplicantDashboard: React.FC = () => {
 
       {/* TAB CONTENT: AI CAREER COACH */}
       {activeTab === 'aiCoach' && (
-        <div className="space-y-8 p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
+        <div className="space-y-8 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-bold text-blue-400 uppercase tracking-widest flex items-center gap-1.5">
+            <span className="text-xs font-mono font-bold text-stone-900 dark:text-[#D4F268] uppercase tracking-widest flex items-center gap-1.5">
               <Sparkles className="w-4 h-4" /> AI Powered Career Advisor
             </span>
-            <h2 className="text-2xl font-extrabold text-white">Customized Interview & Growth Strategy</h2>
-            <p className="text-xs text-slate-400">Receive instant AI guidance, technical interview questions, and roadmap items tailored to your profile.</p>
+            <h2 className="text-2xl font-serif italic text-stone-900 dark:text-white">Customized Interview & Growth Strategy</h2>
+            <p className="text-xs text-stone-600 dark:text-stone-400 font-sans">Receive instant AI guidance, technical interview questions, and roadmap items tailored to your profile.</p>
           </div>
 
           {/* Target Role Input */}
@@ -559,12 +558,12 @@ export const ApplicantDashboard: React.FC = () => {
               value={targetRole}
               onChange={e => setTargetRole(e.target.value)}
               placeholder="Enter target role (e.g. Lead AI Engineer)..."
-              className="flex-1 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+              className="flex-1 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
             />
             <button
               onClick={generateCareerAdvice}
               disabled={isAiLoading}
-              className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-xs font-bold text-white shadow-lg shrink-0"
+              className="px-6 py-3 rounded-2xl bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold shadow-lg shrink-0 cursor-pointer"
             >
               {isAiLoading ? 'Analyzing with Gemini...' : 'Generate AI Advice'}
             </button>
@@ -572,22 +571,22 @@ export const ApplicantDashboard: React.FC = () => {
 
           {/* AI Result Card */}
           {aiAdvice && (
-            <div className="space-y-6 pt-4 border-t border-slate-800">
+            <div className="space-y-6 pt-4 border-t border-stone-200 dark:border-white/10">
               
-              <div className="p-5 rounded-2xl bg-blue-950/40 border border-blue-500/30 space-y-2">
-                <h3 className="text-sm font-bold text-blue-400 flex items-center gap-2">
+              <div className="p-5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 space-y-2">
+                <h3 className="text-sm font-bold text-stone-900 dark:text-[#D4F268] flex items-center gap-2">
                   <Award className="w-4 h-4" /> Strategic Advice
                 </h3>
-                <p className="text-xs text-slate-200 leading-relaxed">{aiAdvice.advice}</p>
+                <p className="text-xs text-stone-700 dark:text-stone-200 leading-relaxed">{aiAdvice.advice}</p>
               </div>
 
               {/* Key Interview Questions */}
               <div>
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Key Technical Interview Scenarios</h3>
+                <h3 className="text-xs font-mono font-bold text-stone-900 dark:text-stone-300 uppercase tracking-wider mb-3">Key Technical Interview Scenarios</h3>
                 <div className="space-y-2">
                   {aiAdvice.keyQuestions?.map((q, idx) => (
-                    <div key={idx} className="p-3.5 rounded-xl bg-slate-800/50 border border-slate-700/60 text-xs text-slate-200 flex items-start gap-2.5">
-                      <HelpCircle className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                    <div key={idx} className="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-900/40 border border-stone-200 dark:border-white/10 text-xs text-stone-800 dark:text-stone-200 flex items-start gap-2.5">
+                      <HelpCircle className="w-4 h-4 text-stone-900 dark:text-[#D4F268] shrink-0 mt-0.5" />
                       <span>{q}</span>
                     </div>
                   ))}
@@ -596,10 +595,10 @@ export const ApplicantDashboard: React.FC = () => {
 
               {/* Skill Roadmap */}
               <div>
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Skill Advancement Roadmap</h3>
+                <h3 className="text-xs font-mono font-bold text-stone-900 dark:text-stone-300 uppercase tracking-wider mb-3">Skill Advancement Roadmap</h3>
                 <div className="flex flex-wrap gap-2">
                   {aiAdvice.skillRoadmap?.map((item, idx) => (
-                    <span key={idx} className="px-3.5 py-1.5 rounded-xl bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-xs font-medium">
+                    <span key={idx} className="px-3.5 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-900 text-stone-900 dark:text-[#D4F268] border border-stone-200 dark:border-white/10 text-xs font-mono font-medium">
                       🚀 {item}
                     </span>
                   ))}
@@ -612,7 +611,7 @@ export const ApplicantDashboard: React.FC = () => {
       )}
 
       {/* AI RECOMMENDATIONS ENGINE SECTION IN DASHBOARD */}
-      <div className="pt-8 border-t border-slate-800">
+      <div className="pt-8 border-t border-stone-200 dark:border-white/10">
         <AIJobRecommendations
           title="Recommended Roles For You"
           subtitle="AI analyzed your skills, bio, and past applications to find these matches"

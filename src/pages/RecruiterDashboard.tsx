@@ -26,7 +26,7 @@ export const RecruiterDashboard: React.FC = () => {
   const { user, token } = useAuth();
   const { showToast } = useTheme();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'postJob' | 'manageJobs' | 'applicants' | 'company'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'postJob' | 'manageJobs' | 'applicants'>('overview');
 
   // State Data
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -80,8 +80,9 @@ export const RecruiterDashboard: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed loading recruiter data:', err);
-    } font: null;
-    setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -212,40 +213,42 @@ export const RecruiterDashboard: React.FC = () => {
     : applications.filter(a => a.jobId === applicantFilterJobId);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans transition-colors">
       
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-lg shrink-0">
+          <div className="w-16 h-16 rounded-2xl bg-stone-900 text-[#D4F268] flex items-center justify-center shadow-lg shrink-0">
             <Building2 className="w-8 h-8" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-extrabold text-white">{company?.name || 'Recruiter Portal'}</h1>
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                Verified Hiring Partner
+              <h1 className="text-2xl font-serif italic text-stone-900 dark:text-white">{company?.name || 'Recruiter Portal'}</h1>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-[#D4F268] border border-stone-200 dark:border-white/10">
+                Verified Hiring Ledger
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">Logged in as {user?.name} ({user?.email})</p>
+            <p className="text-xs text-stone-600 dark:text-stone-400 mt-0.5 font-mono">Logged in as {user?.name} ({user?.email})</p>
           </div>
         </div>
 
         <button
           onClick={() => setActiveTab('postJob')}
-          className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-xs font-bold text-white shadow-lg shadow-blue-600/30 flex items-center gap-2 transition-all"
+          className="px-6 py-3 rounded-2xl bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold shadow-lg hover:bg-stone-800 dark:hover:bg-lime-300 flex items-center gap-2 transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          <span>Post New Job Role</span>
+          <span>Post New Job Position</span>
         </button>
       </div>
 
       {/* Tabs Nav */}
-      <div className="flex border-b border-slate-800 gap-2 overflow-x-auto pb-1">
+      <div className="flex border-b border-stone-200 dark:border-white/10 gap-2 overflow-x-auto pb-1">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'overview' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'overview'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Briefcase className="w-4 h-4" />
@@ -254,8 +257,10 @@ export const RecruiterDashboard: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('postJob')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'postJob' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'postJob'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Plus className="w-4 h-4" />
@@ -264,8 +269,10 @@ export const RecruiterDashboard: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('manageJobs')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'manageJobs' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'manageJobs'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Briefcase className="w-4 h-4" />
@@ -274,12 +281,14 @@ export const RecruiterDashboard: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('applicants')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'applicants' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'applicants'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Users className="w-4 h-4" />
-          View Applicants ({applications.length})
+          Candidate Applications ({applications.length})
         </button>
       </div>
 
@@ -287,53 +296,53 @@ export const RecruiterDashboard: React.FC = () => {
       {activeTab === 'overview' && (
         <div className="space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md flex items-center justify-between">
               <div>
-                <span className="text-xs font-mono uppercase text-slate-500">Active Job Posts</span>
-                <h3 className="text-3xl font-black text-white mt-1">{jobs.length}</h3>
+                <span className="text-xs font-mono uppercase text-stone-500">Active Job Posts</span>
+                <h3 className="text-3xl font-serif italic text-stone-900 dark:text-white mt-1 font-bold">{jobs.length}</h3>
               </div>
-              <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-400">
+              <div className="p-3.5 rounded-2xl bg-stone-100 dark:bg-stone-900 text-stone-900 dark:text-[#D4F268]">
                 <Briefcase className="w-6 h-6" />
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md flex items-center justify-between">
               <div>
-                <span className="text-xs font-mono uppercase text-slate-500">Applications Received</span>
-                <h3 className="text-3xl font-black text-indigo-400 mt-1">{applications.length}</h3>
+                <span className="text-xs font-mono uppercase text-stone-500">Applications Received</span>
+                <h3 className="text-3xl font-serif italic text-stone-900 dark:text-[#D4F268] mt-1 font-bold">{applications.length}</h3>
               </div>
-              <div className="p-3 rounded-2xl bg-indigo-500/10 text-indigo-400">
+              <div className="p-3.5 rounded-2xl bg-stone-100 dark:bg-stone-900 text-stone-900 dark:text-[#D4F268]">
                 <Users className="w-6 h-6" />
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex items-center justify-between">
+            <div className="p-6 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md flex items-center justify-between">
               <div>
-                <span className="text-xs font-mono uppercase text-slate-500">Accepted Candidates</span>
-                <h3 className="text-3xl font-black text-emerald-400 mt-1">
+                <span className="text-xs font-mono uppercase text-stone-500">Accepted Candidates</span>
+                <h3 className="text-3xl font-serif italic text-emerald-600 dark:text-emerald-400 mt-1 font-bold">
                   {applications.filter(a => a.status === 'Accepted').length}
                 </h3>
               </div>
-              <div className="p-3 rounded-2xl bg-emerald-500/10 text-emerald-400">
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
             </div>
           </div>
 
           {/* Recent Applicants Snapshot */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-4">
-            <h2 className="text-base font-bold text-white">Recent Candidate Submissions</h2>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md space-y-4">
+            <h2 className="text-base font-bold text-stone-900 dark:text-white">Recent Candidate Submissions</h2>
             {applications.length === 0 ? (
-              <p className="text-xs text-slate-400 py-6 text-center">No candidate applications received yet.</p>
+              <p className="text-xs text-stone-500 py-6 text-center font-mono">No candidate applications received yet.</p>
             ) : (
               <div className="space-y-3">
                 {applications.slice(0, 4).map(app => (
-                  <div key={app.id} className="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/50 flex items-center justify-between">
+                  <div key={app.id} className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/5 flex items-center justify-between">
                     <div>
-                      <h4 className="text-sm font-bold text-white">{app.applicantName}</h4>
-                      <p className="text-xs text-slate-400">Applied for {app.jobTitle}</p>
+                      <h4 className="text-sm font-bold text-stone-900 dark:text-white">{app.applicantName}</h4>
+                      <p className="text-xs text-stone-600 dark:text-stone-400">Applied for {app.jobTitle}</p>
                     </div>
-                    <span className="text-xs font-bold text-blue-400">{app.matchScore}% Match</span>
+                    <span className="text-xs font-mono font-bold text-stone-900 dark:text-[#D4F268]">{app.matchScore}% Match</span>
                   </div>
                 ))}
               </div>
@@ -344,43 +353,43 @@ export const RecruiterDashboard: React.FC = () => {
 
       {/* TAB CONTENT: POST NEW JOB ROLE */}
       {activeTab === 'postJob' && (
-        <form onSubmit={handleCreateJobSubmit} className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-6 max-w-4xl">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <form onSubmit={handleCreateJobSubmit} className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-6 max-w-4xl">
+          <div className="flex items-center justify-between pb-4 border-b border-stone-200 dark:border-white/10">
             <div>
-              <h2 className="text-lg font-extrabold text-white">Create New Job Opportunity</h2>
-              <p className="text-xs text-slate-400">Fill in details or use Gemini AI to generate structured responsibilities and requirements.</p>
+              <h2 className="text-lg font-serif italic text-stone-900 dark:text-white font-bold">Create New Job Position</h2>
+              <p className="text-xs text-stone-600 dark:text-stone-400">Fill in details or use Gemini AI to generate structured responsibilities and requirements.</p>
             </div>
 
             <button
               type="button"
               onClick={handleGenerateJobWithAi}
               disabled={isAiGenerating}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold hover:bg-blue-500/20 transition-all disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-white/10 text-stone-900 dark:text-[#D4F268] text-xs font-bold hover:border-stone-400 dark:hover:border-[#D4F268] transition-all disabled:opacity-50 cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-blue-400" />
-              {isAiGenerating ? 'Drafting...' : 'Generate with AI'}
+              <Sparkles className="w-4 h-4 text-stone-900 dark:text-[#D4F268]" />
+              {isAiGenerating ? 'Drafting...' : 'Generate with Gemini AI'}
             </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Job Title</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Job Title</label>
               <input
                 type="text"
                 required
                 value={jobTitle}
                 onChange={e => setJobTitle(e.target.value)}
                 placeholder="e.g. Senior Full Stack Engineer"
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Category</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Category</label>
               <select
                 value={jobCategory}
                 onChange={e => setJobCategory(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               >
                 <option value="Software Engineering">Software Engineering</option>
                 <option value="Data Science">Data Science & AI</option>
@@ -394,11 +403,11 @@ export const RecruiterDashboard: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Job Type</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Job Type</label>
               <select
                 value={jobType}
                 onChange={e => setJobType(e.target.value as any)}
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               >
                 <option value="Full-Time">Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
@@ -409,11 +418,11 @@ export const RecruiterDashboard: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Experience Level</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Experience Level</label>
               <select
                 value={experienceLevel}
                 onChange={e => setExperienceLevel(e.target.value as any)}
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               >
                 <option value="Entry Level">Entry Level</option>
                 <option value="Mid Level">Mid Level</option>
@@ -423,81 +432,70 @@ export const RecruiterDashboard: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Location</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Location</label>
               <input
                 type="text"
                 value={location}
                 onChange={e => setLocation(e.target.value)}
                 placeholder="San Francisco, CA / Remote"
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Min Salary ($/yr)</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Min Salary ($/yr)</label>
               <input
                 type="number"
                 value={salaryMin}
                 onChange={e => setSalaryMin(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Max Salary ($/yr)</label>
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Max Salary ($/yr)</label>
               <input
                 type="number"
                 value={salaryMax}
                 onChange={e => setSalaryMax(Number(e.target.value))}
-                className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none"
+                className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Job Overview Description</label>
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Overview Description</label>
             <textarea
               rows={4}
               required
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Describe the company mission and core responsibilities for this opening..."
-              className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Requirements (One per line)</label>
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Requirements (One per line)</label>
             <textarea
               rows={3}
               value={requirementsText}
               onChange={e => setRequirementsText(e.target.value)}
               placeholder="5+ years experience with React and TypeScript&#10;Deep experience with PostgreSQL..."
-              className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none resize-none"
+              className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Key Responsibilities (One per line)</label>
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">Key Responsibilities (One per line)</label>
             <textarea
               rows={3}
               value={responsibilitiesText}
               onChange={e => setResponsibilitiesText(e.target.value)}
-              placeholder="Lead web application development&#10;Optimize frontend bundle speeds..."
-              className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none resize-none"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Perks & Benefits (One per line)</label>
-            <textarea
-              rows={3}
-              value={benefitsText}
-              onChange={e => setBenefitsText(e.target.value)}
-              placeholder="Equity options&#10;100% remote flexibility&#10;Unlimited PTO..."
-              className="w-full px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700 text-xs text-white focus:outline-none resize-none"
+              placeholder="Lead web application development&#10;Optimize bundle speeds..."
+              className="w-full px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white focus:outline-none resize-none"
             />
           </div>
 
@@ -505,9 +503,9 @@ export const RecruiterDashboard: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmittingJob}
-              className="px-8 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-xs font-bold text-white shadow-lg transition-colors"
+              className="px-8 py-3.5 rounded-2xl bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] text-xs font-bold shadow-lg hover:bg-stone-800 dark:hover:bg-lime-300 transition-colors cursor-pointer"
             >
-              {isSubmittingJob ? 'Publishing...' : 'Publish Job Listing'}
+              {isSubmittingJob ? 'Publishing...' : 'Publish Position'}
             </button>
           </div>
         </form>
@@ -515,24 +513,24 @@ export const RecruiterDashboard: React.FC = () => {
 
       {/* TAB CONTENT: MANAGE JOBS */}
       {activeTab === 'manageJobs' && (
-        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <h2 className="text-base font-bold text-white pb-3 border-b border-slate-800">Your Active Job Listings</h2>
+        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl">
+          <h2 className="text-base font-bold text-stone-900 dark:text-white pb-3 border-b border-stone-200 dark:border-white/10">Active Job Listings</h2>
           {jobs.length === 0 ? (
-            <p className="text-xs text-slate-400 py-6 text-center">No jobs created yet.</p>
+            <p className="text-xs text-stone-500 py-6 text-center font-mono">No jobs created yet.</p>
           ) : (
             <div className="space-y-4">
               {jobs.map(j => (
-                <div key={j.id} className="p-5 rounded-2xl bg-slate-800/40 border border-slate-700/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div key={j.id} className="p-5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
-                    <h3 className="text-base font-bold text-white">{j.title}</h3>
-                    <p className="text-xs text-slate-400">{j.category} • {j.location} • ${j.salaryMin.toLocaleString()} - ${j.salaryMax.toLocaleString()}</p>
-                    <p className="text-[10px] text-slate-500 mt-1">{j.applicantsCount} Applicants • Posted {new Date(j.createdAt).toLocaleDateString()}</p>
+                    <h3 className="text-base font-bold text-stone-900 dark:text-white">{j.title}</h3>
+                    <p className="text-xs text-stone-600 dark:text-stone-400">{j.category} • {j.location} • ${j.salaryMin.toLocaleString()} - ${j.salaryMax.toLocaleString()}</p>
+                    <p className="text-[10px] font-mono text-stone-500 mt-1">{j.applicantsCount} Applicants • Posted {new Date(j.createdAt).toLocaleDateString()}</p>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleDeleteJob(j.id)}
-                      className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20"
+                      className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 cursor-pointer"
                       title="Delete Job"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -547,15 +545,15 @@ export const RecruiterDashboard: React.FC = () => {
 
       {/* TAB CONTENT: VIEW APPLICANTS */}
       {activeTab === 'applicants' && (
-        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-3 border-b border-slate-800">
-            <h2 className="text-base font-bold text-white">Candidate Applications</h2>
+        <div className="space-y-6 p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-3 border-b border-stone-200 dark:border-white/10">
+            <h2 className="text-base font-bold text-stone-900 dark:text-white">Candidate Applications</h2>
             <select
               value={applicantFilterJobId}
               onChange={e => setApplicantFilterJobId(e.target.value)}
-              className="px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white"
+              className="px-4 py-2 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10 text-xs text-stone-900 dark:text-white cursor-pointer"
             >
-              <option value="all">All Jobs ({applications.length})</option>
+              <option value="all">All Positions ({applications.length})</option>
               {jobs.map(j => (
                 <option key={j.id} value={j.id}>{j.title}</option>
               ))}
@@ -563,32 +561,32 @@ export const RecruiterDashboard: React.FC = () => {
           </div>
 
           {filteredApplications.length === 0 ? (
-            <p className="text-xs text-slate-400 py-8 text-center">No candidate applications found for this selection.</p>
+            <p className="text-xs text-stone-500 py-8 text-center font-mono">No candidate applications found for this selection.</p>
           ) : (
             <div className="space-y-4">
               {filteredApplications.map(app => (
-                <div key={app.id} className="p-5 rounded-2xl bg-slate-800/40 border border-slate-700/60 space-y-4">
+                <div key={app.id} className="p-5 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 space-y-4">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <img
                         src={app.applicantAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250'}
                         alt={app.applicantName}
-                        className="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-700"
+                        className="w-12 h-12 rounded-xl object-cover ring-1 ring-stone-300 dark:ring-white/10"
                       />
                       <div>
-                        <h4 className="text-base font-bold text-white">{app.applicantName}</h4>
-                        <p className="text-xs text-slate-400">{app.applicantTitle} • {app.applicantEmail}</p>
-                        <p className="text-[10px] text-blue-400 font-semibold mt-0.5">Applied for: {app.jobTitle}</p>
+                        <h4 className="text-base font-bold text-stone-900 dark:text-white">{app.applicantName}</h4>
+                        <p className="text-xs text-stone-600 dark:text-stone-400">{app.applicantTitle} • {app.applicantEmail}</p>
+                        <p className="text-[10px] font-mono font-semibold text-stone-900 dark:text-[#D4F268] mt-0.5">Position: {app.jobTitle}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                        {app.matchScore}% AI Match
+                      <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-stone-200 dark:bg-stone-800 text-stone-900 dark:text-[#D4F268]">
+                        {app.matchScore}% Match
                       </span>
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        app.status === 'Accepted' ? 'bg-emerald-500/10 text-emerald-400' :
-                        app.status === 'Rejected' ? 'bg-rose-500/10 text-rose-400' : 'bg-amber-500/10 text-amber-400'
+                        app.status === 'Accepted' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
+                        app.status === 'Rejected' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400' : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                       }`}>
                         {app.status}
                       </span>
@@ -597,19 +595,19 @@ export const RecruiterDashboard: React.FC = () => {
 
                   {/* Cover letter */}
                   {app.coverLetter && (
-                    <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 italic">
+                    <div className="p-3.5 rounded-xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/5 text-xs text-stone-700 dark:text-stone-300 italic">
                       "{app.coverLetter}"
                     </div>
                   )}
 
                   {/* Actions */}
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-800/60">
+                  <div className="flex items-center justify-between pt-2 border-t border-stone-200 dark:border-white/10">
                     {app.resumeUrl ? (
                       <a
                         href={app.resumeUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-semibold text-blue-400 hover:underline flex items-center gap-1"
+                        className="text-xs font-semibold text-stone-900 dark:text-[#D4F268] hover:underline flex items-center gap-1"
                       >
                         <FileText className="w-3.5 h-3.5" />
                         View Resume ({app.resumeName || 'Resume.pdf'})
@@ -619,13 +617,13 @@ export const RecruiterDashboard: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleUpdateApplicationStatus(app.id, 'Rejected')}
-                        className="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold hover:bg-rose-500/20"
+                        className="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-semibold hover:bg-rose-500/20 cursor-pointer"
                       >
                         Reject
                       </button>
                       <button
                         onClick={() => handleUpdateApplicationStatus(app.id, 'Accepted')}
-                        className="px-4 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500"
+                        className="px-4 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-500 cursor-pointer"
                       >
                         Accept Candidate
                       </button>

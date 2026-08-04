@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { TalioLogo } from '../components/TalioLogo';
 import { Briefcase, Mail, Lock, User, Building, ArrowRight, CheckCircle2, UserCheck, ShieldCheck } from 'lucide-react';
 import { Role } from '../types';
 
@@ -36,48 +37,42 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-lg space-y-8 p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl relative overflow-hidden">
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-sans transition-colors">
+      <div className="w-full max-w-lg space-y-8 p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-2xl relative overflow-hidden">
         
-        {/* Glow */}
-        <div className="absolute -top-12 -left-12 w-40 h-40 bg-indigo-600/20 blur-3xl rounded-full pointer-events-none" />
-
         {/* Header */}
-        <div className="text-center space-y-2">
-          <Link to="/" className="inline-flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/25">
-              <Briefcase className="w-5 h-5" />
-            </div>
-            <span className="text-2xl font-bold text-white tracking-tight">
-              Talio <span className="text-blue-400">Hub</span>
-            </span>
-          </Link>
-          <h2 className="text-xl font-bold text-white pt-2">Create Your Account</h2>
-          <p className="text-xs text-slate-400">Join the AI career hub for developers and recruiters.</p>
+        <div className="text-center space-y-3 flex flex-col items-center">
+          <TalioLogo size="lg" />
+          <div className="space-y-1">
+            <h2 className="text-2xl font-serif italic text-stone-900 dark:text-white">Create Account</h2>
+            <p className="text-xs text-stone-600 dark:text-stone-400">
+              Join the algorithmic talent infrastructure for candidates & recruiters.
+            </p>
+          </div>
         </div>
 
         {/* Role Selector Tabs */}
-        <div className="grid grid-cols-2 gap-3 p-1.5 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+        <div className="grid grid-cols-2 gap-3 p-1.5 rounded-2xl bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-white/10">
           <button
             type="button"
             onClick={() => setRole('applicant')}
-            className={`py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               role === 'applicant'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             <UserCheck className="w-4 h-4" />
-            Job Seeker
+            Job Seeker / Candidate
           </button>
 
           <button
             type="button"
             onClick={() => setRole('recruiter')}
-            className={`py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            className={`py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               role === 'recruiter'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
             }`}
           >
             <Building className="w-4 h-4" />
@@ -88,78 +83,88 @@ export const RegisterPage: React.FC = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Full Name</label>
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700/80">
-              <User className="w-4 h-4 text-slate-400 shrink-0" />
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">
+              Full Name
+            </label>
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <User className="w-4 h-4 text-stone-400 shrink-0" />
               <input
                 type="text"
                 required
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Alex Morgan"
-                className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+                className="w-full bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Work Email</label>
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700/80">
-              <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">
+              Work / Personal Email
+            </label>
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <Mail className="w-4 h-4 text-stone-400 shrink-0" />
               <input
                 type="email"
                 required
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="alex@company.com"
-                className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+                className="w-full bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none"
               />
             </div>
           </div>
 
           {role === 'recruiter' && (
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Company Name</label>
-              <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700/80">
-                <Building className="w-4 h-4 text-slate-400 shrink-0" />
+              <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">
+                Company Name
+              </label>
+              <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+                <Building className="w-4 h-4 text-stone-400 shrink-0" />
                 <input
                   type="text"
                   required
                   value={companyName}
-                  onChange={e => setCompanyName(e.target.value)}
+                  onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="e.g. TechPulse AI"
-                  className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+                  className="w-full bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Professional Title</label>
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700/80">
-              <Briefcase className="w-4 h-4 text-slate-400 shrink-0" />
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">
+              Professional Title
+            </label>
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <Briefcase className="w-4 h-4 text-stone-400 shrink-0" />
               <input
                 type="text"
                 value={title}
-                onChange={e => setTitle(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
                 placeholder={role === 'applicant' ? 'e.g. Senior Full Stack Engineer' : 'e.g. Talent Acquisition Lead'}
-                className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+                className="w-full bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
-            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-slate-800/80 border border-slate-700/80">
-              <Lock className="w-4 h-4 text-slate-400 shrink-0" />
+            <label className="block text-xs font-mono font-medium text-stone-700 dark:text-stone-300 mb-1.5 uppercase">
+              Password
+            </label>
+            <div className="flex items-center gap-2.5 px-4 py-3 rounded-2xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <Lock className="w-4 h-4 text-stone-400 shrink-0" />
               <input
                 type="password"
                 required
                 minLength={6}
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 6 characters"
-                className="w-full bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none"
+                className="w-full bg-transparent text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none"
               />
             </div>
           </div>
@@ -167,16 +172,16 @@ export const RegisterPage: React.FC = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3.5 rounded-2xl font-bold text-xs text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-600/30 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3.5 rounded-2xl font-bold text-xs bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-lg hover:bg-stone-800 dark:hover:bg-lime-300 transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting ? 'Creating Account...' : 'Register Account'}
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="text-center pt-2 text-xs text-slate-400">
+        <div className="text-center pt-2 text-xs text-stone-600 dark:text-stone-400 font-sans">
           Already registered?{' '}
-          <Link to="/login" className="text-blue-400 font-semibold hover:underline">
+          <Link to="/login" className="text-stone-900 dark:text-[#D4F268] font-bold hover:underline">
             Sign In here
           </Link>
         </div>

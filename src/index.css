@@ -2,16 +2,23 @@
 
 @layer base {
   :root {
-    --bg-stone: #0C0A09;
+    --bg-stone: #F5F5F4;
     --accent-lime: #D4F268;
+    --surface-warm: #FFFFFF;
+    --foreground-stone: #0C0A09;
+  }
+
+  html.dark {
+    --bg-stone: #0C0A09;
     --surface-warm: #1C1917;
     --foreground-stone: #E7E5E4;
   }
 
   body {
-    background-color: #0C0A09;
-    color: #E7E5E4;
+    background-color: var(--bg-stone);
+    color: var(--foreground-stone);
     font-family: 'Instrument Sans', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   h1, h2, h3, .font-serif {
@@ -33,7 +40,7 @@
   height: 100vh;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.04;
+  opacity: 0.03;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
@@ -53,8 +60,11 @@
 ::-webkit-scrollbar {
   width: 6px;
 }
-::-webkit-scrollbar-track {
+html.dark ::-webkit-scrollbar-track {
   background: #0C0A09;
+}
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #E7E5E4;
 }
 ::-webkit-scrollbar-thumb {
   background: #27272A;
@@ -63,3 +73,4 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #D4F268;
 }
+

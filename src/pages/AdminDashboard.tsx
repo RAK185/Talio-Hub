@@ -119,7 +119,7 @@ export const AdminDashboard: React.FC = () => {
 
   const appStatusData = [
     { name: 'Pending', value: applications.filter(a => a.status === 'Pending').length || 3, color: '#f59e0b' },
-    { name: 'Reviewed', value: applications.filter(a => a.status === 'Reviewed').length || 2, color: '#6366f1' },
+    { name: 'Reviewed', value: applications.filter(a => a.status === 'Reviewed').length || 2, color: '#a855f7' },
     { name: 'Accepted', value: applications.filter(a => a.status === 'Accepted').length || 2, color: '#10b981' },
     { name: 'Rejected', value: applications.filter(a => a.status === 'Rejected').length || 1, color: '#f43f5e' },
   ];
@@ -135,47 +135,49 @@ export const AdminDashboard: React.FC = () => {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans transition-colors">
       
       {/* Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl flex items-center justify-between">
+      <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl flex items-center justify-between">
         <div>
-          <span className="text-xs font-bold text-amber-400 uppercase tracking-widest flex items-center gap-1.5">
+          <span className="text-xs font-mono font-bold text-stone-900 dark:text-[#D4F268] uppercase tracking-widest flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4" /> System Administrator Console
           </span>
-          <h1 className="text-2xl font-extrabold text-white mt-1">Talio Hub Platform Control</h1>
+          <h1 className="text-2xl font-serif italic text-stone-900 dark:text-white mt-1">Talio Governance Ledger</h1>
         </div>
       </div>
 
       {/* Overview Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <span className="text-xs font-mono uppercase text-slate-500">Total Registered Users</span>
-          <h3 className="text-2xl font-black text-white mt-1">{users.length}</h3>
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md">
+          <span className="text-xs font-mono uppercase text-stone-500">Total Registered Users</span>
+          <h3 className="text-2xl font-serif italic font-bold text-stone-900 dark:text-white mt-1">{users.length}</h3>
         </div>
 
-        <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <span className="text-xs font-mono uppercase text-slate-500">Active Job Listings</span>
-          <h3 className="text-2xl font-black text-blue-400 mt-1">{jobs.length}</h3>
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md">
+          <span className="text-xs font-mono uppercase text-stone-500">Active Job Listings</span>
+          <h3 className="text-2xl font-serif italic font-bold text-stone-900 dark:text-[#D4F268] mt-1">{jobs.length}</h3>
         </div>
 
-        <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <span className="text-xs font-mono uppercase text-slate-500">Total Applications</span>
-          <h3 className="text-2xl font-black text-indigo-400 mt-1">{applications.length}</h3>
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md">
+          <span className="text-xs font-mono uppercase text-stone-500">Total Applications</span>
+          <h3 className="text-2xl font-serif italic font-bold text-stone-900 dark:text-stone-200 mt-1">{applications.length}</h3>
         </div>
 
-        <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl">
-          <span className="text-xs font-mono uppercase text-slate-500">Partner Companies</span>
-          <h3 className="text-2xl font-black text-emerald-400 mt-1">{companies.length}</h3>
+        <div className="p-5 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-md">
+          <span className="text-xs font-mono uppercase text-stone-500">Partner Companies</span>
+          <h3 className="text-2xl font-serif italic font-bold text-emerald-600 dark:text-emerald-400 mt-1">{companies.length}</h3>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800 gap-2 overflow-x-auto pb-1">
+      <div className="flex border-b border-stone-200 dark:border-white/10 gap-2 overflow-x-auto pb-1">
         <button
           onClick={() => setActiveTab('analytics')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'analytics' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'analytics'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <BarChart className="w-4 h-4" />
@@ -184,8 +186,10 @@ export const AdminDashboard: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('users')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'users' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'users'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Users className="w-4 h-4" />
@@ -194,8 +198,10 @@ export const AdminDashboard: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('jobs')}
-          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'jobs' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800'
+          className={`flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+            activeTab === 'jobs'
+              ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09] shadow-md'
+              : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white'
           }`}
         >
           <Briefcase className="w-4 h-4" />
@@ -208,25 +214,25 @@ export const AdminDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Bar Chart */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white">Job Postings by Category</h3>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-4">
+            <h3 className="text-sm font-bold text-stone-900 dark:text-white">Job Postings by Category</h3>
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <ReBarChart data={jobCategoryData}>
-                  <XAxis dataKey="name" stroke="#64748b" fontSize={11} />
-                  <YAxis stroke="#64748b" fontSize={11} />
+                  <XAxis dataKey="name" stroke="#888888" fontSize={11} />
+                  <YAxis stroke="#888888" fontSize={11} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px' }}
+                    contentStyle={{ backgroundColor: '#1C1917', borderColor: '#444444', borderRadius: '12px', color: '#fff' }}
                   />
-                  <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="count" fill="#D4F268" radius={[8, 8, 0, 0]} />
                 </ReBarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
           {/* Pie Chart */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
-            <h3 className="text-sm font-bold text-white">Application Status Distribution</h3>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-4">
+            <h3 className="text-sm font-bold text-stone-900 dark:text-white">Application Status Distribution</h3>
             <div className="h-64 w-full flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <RePieChart>
@@ -243,7 +249,7 @@ export const AdminDashboard: React.FC = () => {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '12px' }} />
+                  <Tooltip contentStyle={{ backgroundColor: '#1C1917', borderColor: '#444444', borderRadius: '12px', color: '#fff' }} />
                 </RePieChart>
               </ResponsiveContainer>
             </div>
@@ -254,17 +260,17 @@ export const AdminDashboard: React.FC = () => {
 
       {/* TAB: USERS TABLE */}
       {activeTab === 'users' && (
-        <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h3 className="text-base font-bold text-white">System Users</h3>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700">
-              <Search className="w-4 h-4 text-slate-400" />
+            <h3 className="text-base font-bold text-stone-900 dark:text-white">System Users</h3>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <Search className="w-4 h-4 text-stone-400" />
               <input
                 type="text"
                 value={userSearch}
                 onChange={e => setUserSearch(e.target.value)}
                 placeholder="Search user..."
-                className="bg-transparent text-xs text-white focus:outline-none"
+                className="bg-transparent text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
           </div>
@@ -272,38 +278,38 @@ export const AdminDashboard: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 text-xs font-semibold text-slate-400 uppercase">
+                <tr className="border-b border-stone-200 dark:border-white/10 text-xs font-mono font-semibold text-stone-500 uppercase">
                   <th className="py-3 px-4">User</th>
                   <th className="py-3 px-4">Role</th>
                   <th className="py-3 px-4">Title</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-xs">
+              <tbody className="divide-y divide-stone-200 dark:divide-white/5 text-xs">
                 {filteredUsers.map(u => (
-                  <tr key={u.id} className="hover:bg-slate-800/30">
-                    <td className="py-3.5 px-4 font-bold text-white flex items-center gap-3">
+                  <tr key={u.id} className="hover:bg-stone-50 dark:hover:bg-stone-900/40">
+                    <td className="py-3.5 px-4 font-bold text-stone-900 dark:text-white flex items-center gap-3">
                       <img src={u.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=250'} alt={u.name} className="w-8 h-8 rounded-full object-cover" />
                       <div>
                         <p>{u.name}</p>
-                        <p className="text-[10px] text-slate-400 font-normal">{u.email}</p>
+                        <p className="text-[10px] font-mono text-stone-500 font-normal">{u.email}</p>
                       </div>
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                        u.role === 'admin' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                        u.role === 'recruiter' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' :
-                        'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase ${
+                        u.role === 'admin' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20' :
+                        u.role === 'recruiter' ? 'bg-stone-900 text-white dark:bg-[#D4F268] dark:text-[#0C0A09]' :
+                        'bg-stone-100 text-stone-800 dark:bg-stone-800 dark:text-stone-200'
                       }`}>
                         {u.role}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-slate-300">{u.title || 'N/A'}</td>
+                    <td className="py-3.5 px-4 text-stone-600 dark:text-stone-300">{u.title || 'N/A'}</td>
                     <td className="py-3.5 px-4 text-right">
                       {u.role !== 'admin' && (
                         <button
                           onClick={() => handleDeleteUser(u.id)}
-                          className="p-2 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20"
+                          className="p-2 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 cursor-pointer"
                           title="Delete User"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -320,31 +326,31 @@ export const AdminDashboard: React.FC = () => {
 
       {/* TAB: JOBS TABLE */}
       {activeTab === 'jobs' && (
-        <div className="p-6 sm:p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
+        <div className="p-6 sm:p-8 rounded-3xl bg-white dark:bg-[#1C1917] border border-stone-200 dark:border-white/10 shadow-xl space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h3 className="text-base font-bold text-white">System Job Listings</h3>
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700">
-              <Search className="w-4 h-4 text-slate-400" />
+            <h3 className="text-base font-bold text-stone-900 dark:text-white">System Job Listings</h3>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-stone-50 dark:bg-stone-900 border border-stone-300 dark:border-white/10">
+              <Search className="w-4 h-4 text-stone-400" />
               <input
                 type="text"
                 value={jobSearch}
                 onChange={e => setJobSearch(e.target.value)}
                 placeholder="Search job..."
-                className="bg-transparent text-xs text-white focus:outline-none"
+                className="bg-transparent text-xs text-stone-900 dark:text-white focus:outline-none"
               />
             </div>
           </div>
 
           <div className="space-y-3">
             {filteredJobs.map(j => (
-              <div key={j.id} className="p-4 rounded-2xl bg-slate-800/40 border border-slate-700/60 flex items-center justify-between">
+              <div key={j.id} className="p-4 rounded-2xl bg-stone-50 dark:bg-stone-900/60 border border-stone-200 dark:border-white/10 flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-bold text-white">{j.title}</h4>
-                  <p className="text-xs text-slate-400">{j.companyName} • {j.category} • {j.location}</p>
+                  <h4 className="text-sm font-bold text-stone-900 dark:text-white">{j.title}</h4>
+                  <p className="text-xs text-stone-600 dark:text-stone-400">{j.companyName} • {j.category} • {j.location}</p>
                 </div>
                 <button
                   onClick={() => handleDeleteJob(j.id)}
-                  className="p-2 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500/20"
+                  className="p-2 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500/20 cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
